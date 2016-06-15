@@ -2,234 +2,168 @@ import sys
 import random
 import doctest
 
-corners = [0,2,6,8]
-edges = [3,7,5,1]
-center = 4
-winners = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+class TicTacToe:
 
-def display_board(board):
+    corners = [0,2,6,8]
+    edges = [3,7,5,1]
+    center = 4
+    winners = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
-    for j in range(3):
-        print(" --- "*3)
-        print("| " + str(board[j*3]) + "  | " + str(board[j*3+1]) + "  | " + str(board[j*3+2])+  " | ")
+    def __init__(self):
 
-def space_free(board,i):
+        self.board = [1,2,3,4,5,6,7,8,9]
 
-    if board[i] != 'X' and board[i] != 'O':
-        return True
-    else:
-        return False
+    def display_board(self):
 
-def marker():
+        for j in range(3):
+            print(" --- "*3)
+            print("| " + str(self.board[j*3]) + "  | " + str(self.board[j*3+1]) + "  | " + str(self.board[j*3+2])+  " | ")
 
-    while True:
-        player_input  = raw_input("Would you like to be X's or O's? ")
-        if player_input == 'X' or player_input == 'x':
-            print("Very well. I will be O's.")
-            return 'X','O'
-        elif player_input == 'O' or player_input == 'o':
-            print("Very well. I will be X's.")
-            return 'O','X'
+    def space_free(self,i):
+
+        if self.board[i] != 'X' and self.board[i] != 'O':
+            return True
         else:
-            print("Not a vaild token. Please try again.")
+            return False
 
-def player_move(board, player):
+    def marker(self):
 
-    while True:
-        p = int(raw_input("Enter a number between 1-9: "))
-        if p in range (1,10):
-            if board[p-1] != 'X' and board[p-1] != 'O':
-                board[p-1] = player
-                break
+        while True:
+            player_input  = raw_input("Would you like to be X's or O's? ")
+            if player_input == 'X' or player_input == 'x':
+                print("Very well. I will be O's.")
+                return 'X','O'
+            elif player_input == 'O' or player_input == 'o':
+                print("Very well. I will be X's.")
+                return 'O','X'
             else:
-                print("Oops that spot is taken. Try again.")
-        else:
-            print("Oops that is not a valid move. Try again.")
-    display_board(board)
+                print("Not a vaild token. Please try again.")
 
-def check_winner(board, player, computer):
+    def player_move(self, player):
 
-    for f,j,i  in winners:
-        if board[f] == player and  board[j] == player and  board[i] == player:
-            return 0
-        elif board[f] == computer and board[j] == computer  and  board[i] == computer:
-            return 1
-    return -1
-
-def computer_block(board, player):
-
-    for f,j,i in winners:
-        if board[f] == player and board[j] == player and space_free(board, i) == True:
-            return i
-        elif board[f] == player and board[i] == player and space_free(board, j) == True:
-            return j
-        elif board[i] == player and board[j] == player and space_free(board, f) == True:
-            return f
-    return -1
-
-def computer_win(board, computer):
-
-    for f,j,i in winners:
-        if board[f] == board[j] == computer and space_free(board, i) == True:
-            return i
-        elif board[f] == board[i] == computer and space_free(board, j) == True:
-            return j
-        elif board[j] == board[i] == computer and space_free(board, f) == True:
-            return f
-    return -1
-
-def computer_random(board):
-
-    if space_free(board,center) == True:
-        return center
-    for i in corners:
-        if space_free(board,i) == True:
-            return i
-    for i  in edges:
-        if space_free(board,i) == True:
-            return i
-        else:
-            return -1
-
-def computer_move(board, computer, player):
-
-    block = computer_block(board,player)
-    win = computer_win(board,computer)
-    rand = computer_random(board)
-    print("Hmm...Let me think..")
-    if block >=0:
-        board[block] = computer
-    elif win >=0:
-        board[win] = computer
-    elif rand >=0:
-        board[rand] = computer
-    else:
-        print("Ahh the game has ended in a tie. Well played.")
-        play_again = raw_input("Would you like to play again? Enter Y or N: ")
-        if play_again == 'Y' or play_again == 'y':
-            if __name__ == '__main__':
-                main()
-            else:
-                sys.exit()
-    display_board(board)
-
-def random_turn():
-
-    print("To decide who will go first 1 or 0 will be randomly chosen. If the number is 0, I will go first. If the number is 1, you will go first.")
-    if random.randint(0,1) == 0:
-        print("The number was 0, so I will go first")
-        return 1
-    if random.randint(0,1) == 1:
-        print("The number was 1, so you will go first")
-        return 2
-
-def main():
-
-    print("Welcome to tic tac toe.  \nThe rules are simple: enter a number 1-9 for your move, if that spot is taken you will be prompted to enter another number.  \nThe first one to get three in a row wins. Good luck, human. You will need it.")
-    player, computer = marker()
-    board = [1,2,3,4,5,6,7,8,9]
-    print("This is the board to begin with. You will be able to see it after every move.")
-    display_board(board)
-    a  = 0
-    if random_turn() == 1:
-        while a < 9:
-            computer_move(board,computer,player)
-            a+=1
-            if check_winner(board,player,computer) == 0:
-                print("Congrats! You have somehow managed to beat me!")
-                play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                if play_again == 'Y' or play_again == 'y':
-                    if __name__ == '__main__':
-                        main()
+        while True:
+            p = int(raw_input("Enter a number between 1-9: "))
+            if p in range (1,10):
+                if self.board[p-1] != 'X' and self.board[p-1] != 'O':
+                    self.board[p-1] = player
+                    break
                 else:
-                    sys.exit()
+                    print("Oops that spot is taken. Try again.")
             else:
-                if check_winner(board,player,computer) == 1:
-                    print("Haha I have won! I knew a human wouldn't be able to beat me!")
-                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                    if play_again == 'Y' or play_again == 'y':
-                        if __name__ == '__main__':
-                            main()
-                    else:
-                        sys.exit()
-            player_move(board,player)
-            a+=1
-            if check_winner(board,player,computer) == 0:
-                print("Congrats! You have somehow managed to beat me!")
-                play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                if play_again == 'Y' or play_again == 'y':
-                    if __name__ == '__main__':
-                        main()
-                    else:
-                        sys.exit()
+                print("Oops that is not a valid move. Try again.")
+        self.display_board()
+
+    def check_winner(self, player, computer):
+
+        for f,j,i  in TicTacToe.winners:
+            if self.board[f] == player and  self.board[j] == player and  self.board[i] == player:
+                return 0
+            elif self.board[f] == computer and self.board[j] == computer  and  self.board[i] == computer:
+                return 1
+        return -1
+
+    def computer_block(self, player):
+
+        for f,j,i in TicTacToe.winners:
+            if self.board[f] == player and self.board[j] == player and self.space_free(i) == True:
+                return i
+            elif self.board[f] == player and self.board[i] == player and self.space_free(j) == True:
+                return j
+            elif self.board[i] == player and self.board[j] == player and self.space_free(f) == True:
+                return f
+        return -1
+
+    def computer_win(self, computer):
+
+        for f,j,i in TicTacToe.winners:
+            if self.board[f]== computer and self. board[j] == computer and self.space_free(i) == True:
+                return i
+            elif self.board[f] == computer and self.board[i] == computer and self.space_free(j) == True:
+                return j
+            elif self.board[j] == computer and self.board[i] == computer and self.space_free(f) == True:
+                return f
+        return -1
+
+    def computer_random(self):
+
+        if self.space_free(TicTacToe.center) == True:
+            return TicTacToe.center
+        for i in TicTacToe.corners:
+            if self.space_free(i) == True:
+                return i
+        for i  in TicTacToe.edges:
+            if self.space_free(i) == True:
+                return i
             else:
-                if check_winner(board,player,computer) == 1:
-                    print("Haha I have won! I knew a human wouldn't be able to beat me!")
-                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                    if play_again == 'Y' or play_again == 'y':
-                        if __name__ == '__main__':
-                            main()
-                    else:
-                        sys.exit()
-        print("Ahh the game has ended in a tie. Well played.")
-        play_again = raw_input("Would you like to play again? Enter Y or N: ")
-        if play_again == 'Y' or play_again == 'y':
-            if __name__ == '__main__':
-                main()
+                return -1
+
+    def computer_move(self, computer, player):
+
+        block = self.computer_block(player)
+        win = self.computer_win(computer)
+        rand = self.computer_random()
+        print("Hmm...Let me think..")
+        if block >=0:
+            self.board[block] = computer
+        elif win >=0:
+            self.board[win] = computer
+        elif rand >=0:
+            self.board[rand] = computer
+        self.display_board()
+
+    def random_turn():
+
+        print("To decide who will go first 1 or 0 will be randomly chosen. If the number is 0, I will go first. If the number is 1, you will go first.")
+        if random.randint(0,1) == 0:
+            print("The number was 0, so I will go first")
+            return 1
+        if random.randint(0,1) == 1:
+            print("The number was 1, so you will go first")
+            return 2
+
+    def play(self):
+
+        print("Welcome to tic tac toe.  \nThe rules are simple: enter a number 1-9 for your move,if that spot is taken you will be prompted to enter another numb\
+er.  \nThe first one to get three in a row wins. Good luck, human. You will need it.")
+        while 1:
+            self.board = [1,2,3,4,5,6,7,8,9]
+            player, computer = self.marker()
+            print("This is the board to begin with. You will be able to see it after every move.")
+            self.display_board()
+            a  = 0
+            if self.random_turn  == 1:
+                while 1:
+                    self.computer_move(computer,player)
+                    if self.check_winner(player,computer) == 1:
+                        print("Haha I have won! I knew a human wouldn't be able to beat me!")
+                        break
+                a +=1
+                if a > 8:
+                    print("Ahh the game has ended in a tie. Well played.")
+                    break
+                self. player_move(player)
+                if self.check_winner(player,computer) == 0:
+                    print("Congrats! You have somehow managed to beat me!")
+                    break
+                a +=1
             else:
+                while 1:
+                    self.computer_move(computer,player)
+                    if self.check_winner(player,computer) == 1:
+                        print("Haha I have won! I knew a human wouldn't be able to beat me!")
+                        break
+                    a +=1
+                    if a > 8:
+                        print("Ahh the game has ended in a tie. Well played.")
+                        break
+                    self. player_move(player)
+                    if self.check_winner(player,computer) == 0:
+                        print("Congrats! You have somehow managed to beat me!")
+                        break
+                    a +=1
+            play_again = raw_input("Would you like to play again? Please enter Y or N: ").upper()
+            if play_again != 'Y':
                 sys.exit()
-    else:
-        while a < 9:
-            player_move(board,player)
-            a+=1
-            if check_winner(board,player,computer) == 0:
-                print("Congrats! You have somehow managed to beat me!")
-                play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                if play_again == 'Y' or play_again == 'y':
-                    if __name__ == '__main__':
-                        main()
-                    else:
-                        sys.exit()
-            else:
-                if check_winner(board,player,computer) == 1:
-                    print("Haha I have won! I knew a human wouldn't be able to beat me!") 
-                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                    if play_again == 'Y' or play_again == 'y':
-                        if __name__ == '__main__':
-                            main()
-                    else:
-                        sys.exit()
-            computer_move(board,computer,player)
-            a+=1
-            if check_winner(board,player,computer) == 0:
-                print("Congrats! You have somehow managed to beat me!")
-                play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                if play_again == 'Y' or play_again == 'y':
-                    if __name__ == '__main__':
-                        main()
-                    else:
-                        sys.exit()
-            else:
-                if check_winner(board,player,computer) == 1:
-                    print("Haha I have won! I knew a human wouldn't be able to beat me!") 
-                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
-                    if play_again == 'Y' or play_again == 'y':
-                        if __name__ == '__main__':
-                            main()
-                    else:
-                        sys.exit()
 
-        print("Ahh the game has ended in a tie. Well played.")
-        play_again = raw_input("Would you like to play again? Enter Y or N: ")
-        if play_again == 'Y' or play_again == 'y':
-            if __name__ == '__main__':
-                main()
-            else:
-                sys.exit()
-
-if __name__ == '__main__':
-    if ("--test" in sys.argv):
-        doctest.testmod(verbose=True)
-        sys.exit(0)
-
-    main()
+t = TicTacToe()
+t.play()
