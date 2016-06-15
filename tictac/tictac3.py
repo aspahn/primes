@@ -105,7 +105,12 @@ def computer_move(board, computer, player):
         board[rand] = computer
     else:
         print("Ahh the game has ended in a tie. Well played.")
-        sys.exit()
+        play_again = raw_input("Would you like to play again? Enter Y or N: ")
+        if play_again == 'Y' or play_again == 'y':
+            if __name__ == '__main__':
+                main()
+            else:
+                sys.exit()
     display_board(board)
 
 def random_turn():
@@ -120,10 +125,9 @@ def random_turn():
 
 def main():
 
-    print("Welcome to tic tac toe. The rules are simple: enter a number 1-9 for your move, if that spot is taken you will be prompted to enter another number. The first one to get three in a row wins. Good luck, human. You will need it.")
+    print("Welcome to tic tac toe.  \nThe rules are simple: enter a number 1-9 for your move, if that spot is taken you will be prompted to enter another number.  \nThe first one to get three in a row wins. Good luck, human. You will need it.")
     player, computer = marker()
     board = [1,2,3,4,5,6,7,8,9]
-    print random_turn()
     print("This is the board to begin with. You will be able to see it after every move.")
     display_board(board)
     a  = 0
@@ -133,44 +137,95 @@ def main():
             a+=1
             if check_winner(board,player,computer) == 0:
                 print("Congrats! You have somehow managed to beat me!")
-                sys.exit()
+                play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                if play_again == 'Y' or play_again == 'y':
+                    if __name__ == '__main__':
+                        main()
+                else:
+                    sys.exit()
             else:
                 if check_winner(board,player,computer) == 1:
-                    print("Haha I have won! I knew a human wouldn't be able to beat me!") 
-                    sys.exit()
+                    print("Haha I have won! I knew a human wouldn't be able to beat me!")
+                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                    if play_again == 'Y' or play_again == 'y':
+                        if __name__ == '__main__':
+                            main()
+                    else:
+                        sys.exit()
             player_move(board,player)
             a+=1
             if check_winner(board,player,computer) == 0:
                 print("Congrats! You have somehow managed to beat me!")
-                sys.exit()
+                play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                if play_again == 'Y' or play_again == 'y':
+                    if __name__ == '__main__':
+                        main()
+                    else:
+                        sys.exit()
             else:
                 if check_winner(board,player,computer) == 1:
                     print("Haha I have won! I knew a human wouldn't be able to beat me!")
-                    sys.exit()
+                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                    if play_again == 'Y' or play_again == 'y':
+                        if __name__ == '__main__':
+                            main()
+                    else:
+                        sys.exit()
         print("Ahh the game has ended in a tie. Well played.")
-        sys.exit()
+        play_again = raw_input("Would you like to play again? Enter Y or N: ")
+        if play_again == 'Y' or play_again == 'y':
+            if __name__ == '__main__':
+                main()
+            else:
+                sys.exit()
     else:
         while a < 9:
             player_move(board,player)
             a+=1
             if check_winner(board,player,computer) == 0:
                 print("Congrats! You have somehow managed to beat me!")
-                sys.exit()
+                play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                if play_again == 'Y' or play_again == 'y':
+                    if __name__ == '__main__':
+                        main()
+                    else:
+                        sys.exit()
             else:
                 if check_winner(board,player,computer) == 1:
                     print("Haha I have won! I knew a human wouldn't be able to beat me!") 
-                    sys.exit()
+                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                    if play_again == 'Y' or play_again == 'y':
+                        if __name__ == '__main__':
+                            main()
+                    else:
+                        sys.exit()
             computer_move(board,computer,player)
             a+=1
             if check_winner(board,player,computer) == 0:
                 print("Congrats! You have somehow managed to beat me!")
-                sys.exit()
+                play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                if play_again == 'Y' or play_again == 'y':
+                    if __name__ == '__main__':
+                        main()
+                    else:
+                        sys.exit()
             else:
                 if check_winner(board,player,computer) == 1:
                     print("Haha I have won! I knew a human wouldn't be able to beat me!") 
-                    sys.exit()
+                    play_again = raw_input("Would you like to play again? Enter Y or N: ")
+                    if play_again == 'Y' or play_again == 'y':
+                        if __name__ == '__main__':
+                            main()
+                    else:
+                        sys.exit()
+
         print("Ahh the game has ended in a tie. Well played.")
-        sys.exit()
+        play_again = raw_input("Would you like to play again? Enter Y or N: ")
+        if play_again == 'Y' or play_again == 'y':
+            if __name__ == '__main__':
+                main()
+            else:
+                sys.exit()
 
 if __name__ == '__main__':
     if ("--test" in sys.argv):
